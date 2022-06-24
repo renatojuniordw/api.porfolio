@@ -30,5 +30,5 @@ export class ProjectPortfolio extends Model<ProjectPortfolio>{
         type: DataType.STRING,
         allowNull: false
     })
-    url_img: string;
+    urlImg: string;
 }

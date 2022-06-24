@@ -14,5 +14,5 @@ export class CreateProjectPortfolioDto {
     url: string;
 
     @ApiProperty()
-    url_img: string;
+    urlImg: string;
 }

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { ProjectPortfolioService } from '../services/project-portfolio.service';
 
@@ -12,6 +12,8 @@ export class ProjectPortfolioController {
   constructor(private readonly projectPortfolioService: ProjectPortfolioService) {}
 
   @Post()
+  @ApiBody({ type: CreateProjectPortfolioDto })
+  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
   create(@Body() createProjectPortfolioDto: CreateProjectPortfolioDto) {
     return this.projectPortfolioService.create(createProjectPortfolioDto);
   }
@@ -27,6 +29,7 @@ export class ProjectPortfolioController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateProjectPortfolioDto })
   update(@Param('id') id: string, @Body() updateProjectPortfolioDto: UpdateProjectPortfolioDto) {
     return this.projectPortfolioService.update(+id, updateProjectPortfolioDto);
   }

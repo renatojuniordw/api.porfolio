@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { SkillsService } from '../services/skills.service';
 
@@ -9,9 +9,11 @@ import { UpdateSkillDto } from 'src/models/dto/skills/update-skill.dto';
 @Controller('skills')
 @ApiTags('skills')
 export class SkillsController {
-  constructor(private readonly skillsService: SkillsService) {}
+  constructor(private readonly skillsService: SkillsService) { }
 
   @Post()
+  @ApiBody({ type: CreateSkillDto })
+  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
   create(@Body() createSkillDto: CreateSkillDto) {
     return this.skillsService.create(createSkillDto);
   }
@@ -27,6 +29,7 @@ export class SkillsController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateSkillDto })
   update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
     return this.skillsService.update(+id, updateSkillDto);
   }

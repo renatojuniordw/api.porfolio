@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { CertificationService } from '../services/certification.service';
 
@@ -9,9 +9,11 @@ import { UpdateCertificationDto } from 'src/models/dto/certification/update-cert
 @Controller('certification')
 @ApiTags('certification')
 export class CertificationController {
-  constructor(private readonly certificationService: CertificationService) {}
+  constructor(private readonly certificationService: CertificationService) { }
 
   @Post()
+  @ApiBody({ type: CreateCertificationDto })
+  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
   create(@Body() createCertificationDto: CreateCertificationDto) {
     return this.certificationService.create(createCertificationDto);
   }
@@ -27,6 +29,7 @@ export class CertificationController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateCertificationDto })
   update(@Param('id') id: string, @Body() updateCertificationDto: UpdateCertificationDto) {
     return this.certificationService.update(+id, updateCertificationDto);
   }

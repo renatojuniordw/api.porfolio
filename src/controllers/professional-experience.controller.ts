@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 
 import { ProfessionalExperienceService } from '../services/professional-experience.service';
@@ -12,6 +12,8 @@ export class ProfessionalExperienceController {
   constructor(private readonly professionalExperienceService: ProfessionalExperienceService) {}
 
   @Post()
+  @ApiBody({ type: CreateProfessionalExperienceDto })
+  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
   create(@Body() createProfessionalExperienceDto: CreateProfessionalExperienceDto) {
     return this.professionalExperienceService.create(createProfessionalExperienceDto);
   }
@@ -27,6 +29,7 @@ export class ProfessionalExperienceController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateProfessionalExperienceDto })
   update(@Param('id') id: string, @Body() updateProfessionalExperienceDto: UpdateProfessionalExperienceDto) {
     return this.professionalExperienceService.update(+id, updateProfessionalExperienceDto);
   }

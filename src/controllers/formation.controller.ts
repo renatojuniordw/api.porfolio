@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { FormationService } from '../services/formation.service';
 
@@ -12,6 +12,7 @@ export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
   @Post()
+  @ApiBody({ type: CreateFormationDto })
   create(@Body() createFormationDto: CreateFormationDto) {
     return this.formationService.create(createFormationDto);
   }
@@ -27,6 +28,7 @@ export class FormationController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateFormationDto })
   update(@Param('id') id: string, @Body() updateFormationDto: UpdateFormationDto) {
     return this.formationService.update(+id, updateFormationDto);
   }
