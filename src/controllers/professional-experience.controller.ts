@@ -1,5 +1,5 @@
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 
 import { ProfessionalExperienceService } from '../services/professional-experience.service';
 
@@ -9,11 +9,11 @@ import { UpdateProfessionalExperienceDto } from 'src/models/dto/professional-exp
 @Controller('professional-experience')
 @ApiTags('professional-experience')
 export class ProfessionalExperienceController {
-  constructor(private readonly professionalExperienceService: ProfessionalExperienceService) {}
+  constructor(private readonly professionalExperienceService: ProfessionalExperienceService) { }
 
   @Post()
   @ApiBody({ type: CreateProfessionalExperienceDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.' })
   create(@Body() createProfessionalExperienceDto: CreateProfessionalExperienceDto) {
     return this.professionalExperienceService.create(createProfessionalExperienceDto);
   }
@@ -24,18 +24,27 @@ export class ProfessionalExperienceController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number,
+  ) {
     return this.professionalExperienceService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateProfessionalExperienceDto })
-  update(@Param('id') id: string, @Body() updateProfessionalExperienceDto: UpdateProfessionalExperienceDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateProfessionalExperienceDto: UpdateProfessionalExperienceDto
+  ) {
     return this.professionalExperienceService.update(+id, updateProfessionalExperienceDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.professionalExperienceService.remove(+id);
   }
 }

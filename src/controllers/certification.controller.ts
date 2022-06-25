@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { CertificationService } from '../services/certification.service';
@@ -13,7 +13,7 @@ export class CertificationController {
 
   @Post()
   @ApiBody({ type: CreateCertificationDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.' })
   create(@Body() createCertificationDto: CreateCertificationDto) {
     return this.certificationService.create(createCertificationDto);
   }
@@ -24,18 +24,27 @@ export class CertificationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.certificationService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateCertificationDto })
-  update(@Param('id') id: string, @Body() updateCertificationDto: UpdateCertificationDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateCertificationDto: UpdateCertificationDto
+  ) {
     return this.certificationService.update(+id, updateCertificationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.certificationService.remove(+id);
   }
 }

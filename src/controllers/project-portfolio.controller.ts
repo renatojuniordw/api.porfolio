@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { ProjectPortfolioService } from '../services/project-portfolio.service';
@@ -9,11 +9,11 @@ import { UpdateProjectPortfolioDto } from 'src/models/dto/project-portfolio/upda
 @Controller('project-portfolio')
 @ApiTags('project-portfolio')
 export class ProjectPortfolioController {
-  constructor(private readonly projectPortfolioService: ProjectPortfolioService) {}
+  constructor(private readonly projectPortfolioService: ProjectPortfolioService) { }
 
   @Post()
   @ApiBody({ type: CreateProjectPortfolioDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.' })
   create(@Body() createProjectPortfolioDto: CreateProjectPortfolioDto) {
     return this.projectPortfolioService.create(createProjectPortfolioDto);
   }
@@ -24,18 +24,27 @@ export class ProjectPortfolioController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.projectPortfolioService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateProjectPortfolioDto })
-  update(@Param('id') id: string, @Body() updateProjectPortfolioDto: UpdateProjectPortfolioDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateProjectPortfolioDto: UpdateProjectPortfolioDto
+  ) {
     return this.projectPortfolioService.update(+id, updateProjectPortfolioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.projectPortfolioService.remove(+id);
   }
 }

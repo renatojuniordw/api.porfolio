@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { FormationService } from '../services/formation.service';
@@ -9,7 +9,7 @@ import { CreateFormationDto } from 'src/models/dto/formation/create-formation.dt
 @Controller('formation')
 @ApiTags('formation')
 export class FormationController {
-  constructor(private readonly formationService: FormationService) {}
+  constructor(private readonly formationService: FormationService) { }
 
   @Post()
   @ApiBody({ type: CreateFormationDto })
@@ -23,18 +23,27 @@ export class FormationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number,
+  ) {
     return this.formationService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateFormationDto })
-  update(@Param('id') id: string, @Body() updateFormationDto: UpdateFormationDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateFormationDto: UpdateFormationDto
+  ) {
     return this.formationService.update(+id, updateFormationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.formationService.remove(+id);
   }
 }

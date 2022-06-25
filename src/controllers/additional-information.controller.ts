@@ -1,5 +1,5 @@
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 
 import { AdditionalInformationService } from '../services/additional-information.service';
 
@@ -19,7 +19,9 @@ export class AdditionalInformationController {
     description: 'The record has been successfully created.',
     type: AdditionalInformation
   })
-  create(@Body() createAdditionalInformationDto: CreateAdditionalInformationDto) {
+  create(
+    @Body() createAdditionalInformationDto: CreateAdditionalInformationDto
+  ) {
     return this.additionalInformationService.create(createAdditionalInformationDto);
   }
 
@@ -29,18 +31,27 @@ export class AdditionalInformationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.additionalInformationService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateAdditionalInformationDto })
-  update(@Param('id') id: string, @Body() updateAdditionalInformationDto: UpdateAdditionalInformationDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateAdditionalInformationDto: UpdateAdditionalInformationDto
+  ) {
     return this.additionalInformationService.update(+id, updateAdditionalInformationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.additionalInformationService.remove(+id);
   }
 }

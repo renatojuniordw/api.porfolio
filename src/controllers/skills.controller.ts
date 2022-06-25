@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { SkillsService } from '../services/skills.service';
@@ -13,7 +13,7 @@ export class SkillsController {
 
   @Post()
   @ApiBody({ type: CreateSkillDto })
-  @ApiCreatedResponse({ description: 'The record has been successfully created.'})
+  @ApiCreatedResponse({ description: 'The record has been successfully created.' })
   create(@Body() createSkillDto: CreateSkillDto) {
     return this.skillsService.create(createSkillDto);
   }
@@ -24,18 +24,27 @@ export class SkillsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.skillsService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({ type: UpdateSkillDto })
-  update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number, @Body() updateSkillDto: UpdateSkillDto
+  ) {
     return this.skillsService.update(+id, updateSkillDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+    id: number
+  ) {
     return this.skillsService.remove(+id);
   }
 }
