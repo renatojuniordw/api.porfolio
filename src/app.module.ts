@@ -2,26 +2,24 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
+import { ProfessionalExperienceController } from './controllers/professional-experience.controller';
+import { AdditionalInformationController } from './controllers/additional-information.controller';
+import { ProjectPortfolioController } from './controllers/project-portfolio.controller';
+import { CertificationController } from './controllers/certification.controller';
+import { FormationController } from './controllers/formation.controller';
+import { SkillsController } from './controllers/skills.controller';
 import { AppController } from './app.controller';
 
 import { AppService } from './app.service';
-
-import { SkillsModule } from './modules/skills.module';
-import { FormationModule } from './modules/formation.module';
-import { CertificationModule } from './modules/certification.module';
-import { ProjectPortfolioModule } from './modules/project-portfolio.module';
-import { AdditionalInformationModule } from './modules/additional-information.module';
-import { ProfessionalExperienceModule } from './modules/professional-experience.module';
+import { SkillsService } from './services/skills.service';
+import { FormationService } from './services/formation.service';
+import { CertificationService } from './services/certification.service';
+import { ProjectPortfolioService } from './services/project-portfolio.service';
+import { AdditionalInformationService } from './services/additional-information.service';
+import { ProfessionalExperienceService } from './services/professional-experience.service';
 
 @Module({
   imports: [
-    SkillsModule,
-    FormationModule,
-    CertificationModule,
-    ProjectPortfolioModule,
-    AdditionalInformationModule,
-    ProfessionalExperienceModule,
-
     ConfigModule.forRoot(),
     // SequelizeModule.forRoot({
     //   dialect: 'mysql',
@@ -34,7 +32,23 @@ import { ProfessionalExperienceModule } from './modules/professional-experience.
     //   synchronize: true
     // })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    ProfessionalExperienceController,
+    AdditionalInformationController,
+    ProjectPortfolioController,
+    CertificationController,
+    FormationController,
+    SkillsController,
+    AppController,
+  ],
+  providers: [
+    AppService,
+    SkillsService,
+    FormationService,
+    CertificationService,
+    ProjectPortfolioService,
+    AdditionalInformationService,
+    ProfessionalExperienceService,
+  ],
 })
 export class AppModule { }
