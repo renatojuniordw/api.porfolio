@@ -5,7 +5,7 @@ export class CreateFormationDto {
     course: string;
 
     @ApiProperty()
-    institution_name: string;
+    nameInstitution: string;
 
     @ApiProperty()
     startDate: Date;

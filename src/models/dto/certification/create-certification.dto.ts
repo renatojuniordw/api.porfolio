@@ -11,5 +11,5 @@ export class CreateCertificationDto {
     nameInstitution: string;
 
     @ApiProperty()
-    year: string;
+    year: number;
 }

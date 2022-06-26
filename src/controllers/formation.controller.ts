@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import { FormationService } from '../services/formation.service';
 
 import { UpdateFormationDto } from 'src/models/dto/formation/update-formation.dto';
 import { CreateFormationDto } from 'src/models/dto/formation/create-formation.dto';
+
+import { JoiValidationPipe } from 'src/config/joiValidationPipe.pipe';
+import { FormationSchema } from 'src/models/schema/formation.schema';
 
 @Controller('formation')
 @ApiTags('formation')
@@ -13,6 +16,11 @@ export class FormationController {
 
   @Post()
   @ApiBody({ type: CreateFormationDto })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CreateFormationDto
+  })
+  @UsePipes(new JoiValidationPipe(FormationSchema))
   create(@Body() createFormationDto: CreateFormationDto) {
     return this.formationService.create(createFormationDto);
   }

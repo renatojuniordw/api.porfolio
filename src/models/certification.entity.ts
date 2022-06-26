@@ -24,5 +24,5 @@ export class Certification extends Model<Certification>{
         type: DataType.NUMBER,
         allowNull: false
     })
-    year: string;
+    year: number;
 }
