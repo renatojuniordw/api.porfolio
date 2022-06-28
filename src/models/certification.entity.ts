@@ -21,7 +21,7 @@ export class Certification extends Model<Certification>{
     nameInstitution: string;
 
     @Column({
-        type: DataType.NUMBER,
+        type: DataType.INTEGER,
         allowNull: false
     })
     year: number;

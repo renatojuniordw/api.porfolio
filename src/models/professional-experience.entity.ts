@@ -2,21 +2,6 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table
 export class ProfessionalExperience extends Model<ProfessionalExperience>{
-    // @Column({
-    //     type: DataType.STRING,
-    //     allowNull: false
-    // })
-    // name: string;
-
-    // @Column({
-    //     type: DataType.NUMBER,
-    //     allowNull: false,
-    //     unique: true,
-    //     primaryKey: true,
-    //     autoIncrement: true
-    // })
-    // id: number;
-
     @Column({
         type: DataType.STRING,
         allowNull: false
