@@ -40,7 +40,7 @@ export class ProfessionalExperienceController {
 
   @Patch(':id')
   @ApiBody({ type: UpdateProfessionalExperienceDto })
-  @UsePipes(new JoiValidationPipe(ProfessionalExperienceSchema))
+  // @UsePipes(new JoiValidationPipe(ProfessionalExperienceSchema))
   update(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number, @Body() updateProfessionalExperienceDto: UpdateProfessionalExperienceDto

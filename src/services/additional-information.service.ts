@@ -32,8 +32,9 @@ export class AdditionalInformationService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const current = await this.findOne(id);
     current.destroy();
   }
+
 }

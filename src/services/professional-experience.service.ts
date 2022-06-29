@@ -32,7 +32,7 @@ export class ProfessionalExperienceService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const current = await this.findOne(id);
     current.destroy();
   }

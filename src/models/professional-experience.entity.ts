@@ -16,7 +16,7 @@ export class ProfessionalExperience extends Model<ProfessionalExperience>{
 
     @Column({
         type: DataType.DATE,
-        allowNull: false
+        allowNull: true
     })
     endDate: Date;
 

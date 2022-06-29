@@ -1,6 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Module } from '@nestjs/common';
+import { CacheInterceptor, CacheModule, Module } from '@nestjs/common';
 
 import { ProfessionalExperienceController } from './controllers/professional-experience.controller';
 import { AdditionalInformationController } from './controllers/additional-information.controller';
@@ -28,6 +29,10 @@ import { Skill } from './models/skill.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    CacheModule.register({
+      ttl: 100,
+      max: 6
+    }),
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: process.env.DATABASE_URL,
@@ -36,7 +41,7 @@ import { Skill } from './models/skill.entity';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
       autoLoadModels: true,
-      synchronize: true
+      synchronize: true,
     }),
     SequelizeModule.forFeature([
       ProfessionalExperience,
@@ -64,6 +69,10 @@ import { Skill } from './models/skill.entity';
     ProjectPortfolioService,
     AdditionalInformationService,
     ProfessionalExperienceService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
   ],
 })
 export class AppModule { }
