@@ -1,27 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 
 import { CreateProjectPortfolioDto } from 'src/models/dto/project-portfolio/create-project-portfolio.dto';
 import { UpdateProjectPortfolioDto } from 'src/models/dto/project-portfolio/update-project-portfolio.dto';
 
+import { ProjectPortfolio } from 'src/models/project-portfolio.entity';
+
 @Injectable()
 export class ProjectPortfolioService {
+
+  constructor(
+    @InjectModel(ProjectPortfolio)
+    private projectPortfolioModel: typeof ProjectPortfolio
+  ) { }
+
   create(createProjectPortfolioDto: CreateProjectPortfolioDto) {
-    return 'This action adds a new projectPortfolio';
+    return this.projectPortfolioModel.create(createProjectPortfolioDto);
   }
 
-  findAll() {
-    return `This action returns all projectPortfolio`;
+  findAll(): Promise<ProjectPortfolio[]> {
+    return this.projectPortfolioModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectPortfolio`;
+  findOne(id: number): Promise<ProjectPortfolio> {
+    return this.projectPortfolioModel.findByPk(id);
   }
 
   update(id: number, updateProjectPortfolioDto: UpdateProjectPortfolioDto) {
-    return `This action updates a #${id} projectPortfolio`;
+    return this.projectPortfolioModel.update(updateProjectPortfolioDto, {
+      where: { id: id }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectPortfolio`;
+  async remove(id: number) {
+    const current = await this.findOne(id);
+    current.destroy();
   }
 }

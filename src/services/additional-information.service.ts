@@ -14,19 +14,19 @@ export class AdditionalInformationService {
     private additionalInfModel: typeof AdditionalInformation
   ) { }
 
-  async create(createAdditionalInformationDto: CreateAdditionalInformationDto) {
-    this.additionalInfModel.create(createAdditionalInformationDto);
+  create(createAdditionalInformationDto: CreateAdditionalInformationDto) {
+    return this.additionalInfModel.create(createAdditionalInformationDto);
   }
 
-  async findAll(): Promise<AdditionalInformation[]> {
+  findAll(): Promise<AdditionalInformation[]> {
     return this.additionalInfModel.findAll();
   }
 
-  async findOne(id: number): Promise<AdditionalInformation> {
+  findOne(id: number): Promise<AdditionalInformation> {
     return this.additionalInfModel.findByPk(id);
   }
 
-  async update(id: number, updateAdditionalInformationDto: UpdateAdditionalInformationDto) {
+  update(id: number, updateAdditionalInformationDto: UpdateAdditionalInformationDto) {
     return this.additionalInfModel.update(updateAdditionalInformationDto, {
       where: { id: id }
     });

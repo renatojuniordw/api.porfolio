@@ -1,27 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 
 import { CreateFormationDto } from 'src/models/dto/formation/create-formation.dto';
 import { UpdateFormationDto } from 'src/models/dto/formation/update-formation.dto';
 
+import { Formation } from 'src/models/formation.entity';
+
 @Injectable()
 export class FormationService {
+
+  constructor(
+    @InjectModel(Formation)
+    private formationModel: typeof Formation
+  ) { }
+
   create(createFormationDto: CreateFormationDto) {
-    return 'This action adds a new formation';
+    return this.formationModel.create(createFormationDto);
   }
 
-  findAll() {
-    return `This action returns all formation`;
+  findAll(): Promise<Formation[]> {
+    return this.formationModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} formation`;
+  findOne(id: number): Promise<Formation> {
+    return this.formationModel.findByPk(id);
   }
 
   update(id: number, updateFormationDto: UpdateFormationDto) {
-    return `This action updates a #${id} formation`;
+    return this.formationModel.update(updateFormationDto, {
+      where: { id: id }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} formation`;
+  async remove(id: number) {
+    const current = await this.findOne(id);
+    current.destroy();
   }
 }

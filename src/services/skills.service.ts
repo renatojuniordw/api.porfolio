@@ -1,27 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 
 import { CreateSkillDto } from 'src/models/dto/skills/create-skill.dto';
 import { UpdateSkillDto } from 'src/models/dto/skills/update-skill.dto';
 
+import { Skill } from 'src/models/skill.entity';
+
 @Injectable()
 export class SkillsService {
+
+  constructor(
+    @InjectModel(Skill)
+    private skillModel: typeof Skill
+  ) { }
+
   create(createSkillDto: CreateSkillDto) {
-    return 'This action adds a new skill';
+    return this.skillModel.create(createSkillDto);
   }
 
-  findAll() {
-    return `This action returns all skills`;
+  findAll(): Promise<Skill[]> {
+    return this.skillModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} skill`;
+  findOne(id: number): Promise<Skill> {
+    return this.skillModel.findByPk(id);
   }
 
   update(id: number, updateSkillDto: UpdateSkillDto) {
-    return `This action updates a #${id} skill`;
+    return this.skillModel.update(updateSkillDto, {
+      where: { id: id }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} skill`;
+  async remove(id: number) {
+    const current = await this.findOne(id);
+    current.destroy();
   }
 }
