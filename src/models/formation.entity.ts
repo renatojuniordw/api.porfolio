@@ -12,7 +12,7 @@ export class Formation extends Model<Formation>{
         type: DataType.STRING,
         allowNull: false
     })
-    institution_name: string;
+    nameInstitution: string;
 
     @Column({
         type: DataType.DATE,
@@ -22,7 +22,7 @@ export class Formation extends Model<Formation>{
 
     @Column({
         type: DataType.DATE,
-        allowNull: false
+        allowNull: true
     })
     endDate: Date;
 }
