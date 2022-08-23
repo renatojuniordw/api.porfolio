@@ -1,1 +1,2 @@
-web: node src/main.js
+web: node build/main.js
+release: node build/ace migration:run --force
