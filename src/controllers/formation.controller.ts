@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 import { FormationService } from '../services/formation.service';
 
@@ -15,6 +16,7 @@ export class FormationController {
   constructor(private readonly formationService: FormationService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateFormationDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -39,6 +41,7 @@ export class FormationController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: UpdateFormationDto })
   update(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
@@ -48,6 +51,7 @@ export class FormationController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number

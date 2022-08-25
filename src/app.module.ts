@@ -1,6 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthzModule } from './config/authz/authz.module';
 import { CacheInterceptor, CacheModule, Module } from '@nestjs/common';
 
 import { ProfessionalExperienceController } from './controllers/professional-experience.controller';
@@ -50,7 +51,8 @@ import { Skill } from './models/skill.entity';
       Certification,
       Formation,
       Skill
-    ])
+    ]),
+    AuthzModule
   ],
   controllers: [
     ProfessionalExperienceController,

@@ -1,5 +1,6 @@
+import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 
 import { JoiValidationPipe } from 'src/config/joiValidationPipe.pipe';
 import { AdditionalInformationService } from '../services/additional-information.service';
@@ -15,6 +16,7 @@ export class AdditionalInformationController {
   constructor(private readonly additionalInformationService: AdditionalInformationService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateAdditionalInformationDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -41,6 +43,7 @@ export class AdditionalInformationController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: UpdateAdditionalInformationDto })
   @UsePipes(new JoiValidationPipe(AdditionalInformationSchema))
   update(
@@ -51,6 +54,7 @@ export class AdditionalInformationController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number

@@ -1,5 +1,6 @@
+import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 
 import { JoiValidationPipe } from 'src/config/joiValidationPipe.pipe';
 import { ProfessionalExperienceService } from '../services/professional-experience.service';
@@ -15,6 +16,7 @@ export class ProfessionalExperienceController {
   constructor(private readonly professionalExperienceService: ProfessionalExperienceService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateProfessionalExperienceDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -39,6 +41,7 @@ export class ProfessionalExperienceController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: UpdateProfessionalExperienceDto })
   // @UsePipes(new JoiValidationPipe(ProfessionalExperienceSchema))
   update(
@@ -49,6 +52,7 @@ export class ProfessionalExperienceController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number

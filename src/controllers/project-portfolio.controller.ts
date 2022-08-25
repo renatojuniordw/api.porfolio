@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 import { JoiValidationPipe } from 'src/config/joiValidationPipe.pipe';
 import { ProjectPortfolioService } from '../services/project-portfolio.service';
@@ -15,6 +16,7 @@ export class ProjectPortfolioController {
   constructor(private readonly projectPortfolioService: ProjectPortfolioService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateProjectPortfolioDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -39,6 +41,7 @@ export class ProjectPortfolioController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: UpdateProjectPortfolioDto })
   @UsePipes(new JoiValidationPipe(ProjectPortfolioSchema))
   update(
@@ -49,6 +52,7 @@ export class ProjectPortfolioController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number

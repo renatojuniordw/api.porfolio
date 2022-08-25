@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, HttpStatus, UsePipes, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 import { CertificationService } from '../services/certification.service';
 import { JoiValidationPipe } from 'src/config/joiValidationPipe.pipe';
@@ -15,6 +16,7 @@ export class CertificationController {
   constructor(private readonly certificationService: CertificationService) { }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateCertificationDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -39,6 +41,7 @@ export class CertificationController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: UpdateCertificationDto })
   @UsePipes(new JoiValidationPipe(CertificationSchema))
   update(
@@ -49,6 +52,7 @@ export class CertificationController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
     id: number
