@@ -28,7 +28,7 @@ export class ProfessionalExperience extends Model<ProfessionalExperience>{
 
     @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: true
     })
     description: string;
 }

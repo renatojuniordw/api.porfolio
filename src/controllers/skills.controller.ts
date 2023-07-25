@@ -15,6 +15,7 @@ export class SkillsController {
   constructor(private readonly skillsService: SkillsService) { }
 
   @Post()
+  // @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: CreateSkillDto })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',

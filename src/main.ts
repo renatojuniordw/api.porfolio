@@ -9,6 +9,7 @@ async function bootstrap() {
     .setTitle('Portifolio')
     .setVersion('1.0')
     // .addTag('portifolio')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
